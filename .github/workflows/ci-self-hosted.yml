@@ -25,7 +25,7 @@ jobs:
     - name: Install dependencies
       run: |
         pip install uv
-        uv pip install pytest
+        uv pip install --system pytest
 
     - name: Test with pytest
       run: pytest
