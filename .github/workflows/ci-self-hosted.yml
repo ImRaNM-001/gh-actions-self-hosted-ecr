@@ -12,23 +12,39 @@ env:
   ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
 
 jobs:
-  build:
+  install:
+    name: Install uv & other dependencies
     runs-on: self-hosted
 
     steps:
     - uses: actions/checkout@v4
+
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.12'
+        python-version-file: "pyproject.toml"
 
-    - name: Install dependencies
-      run: |
-        pip install uv
-        uv pip install --system pytest
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
 
-    - name: Test with pytest
-      run: pytest
+    - name: Enable caching
+      uses: astral-sh/setup-uv@v5
+      with:
+        enable-cache: true
+      
+    - name: Install project dependencies
+      run: uv sync --locked --all-extras --dev
+
+    - name: Run tests with pytest
+      run: uv run pytest -vs test_calculator.py
+
+  build:
+    name: Build & push docker image
+    needs: install
+    runs-on: self-hosted
+
+    steps:
+    - uses: actions/checkout@v4    
 
     - name: Configure AWS credentials
       if: success()
@@ -48,9 +64,10 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
-        IMAGE_TAG: ${{ github.sha }}
       run: |
         SHORT_SHA=$(echo $GITHUB_SHA | tail -c 6)
         TAG_DATE=$(date +"%d-%b-%y")
+        BRANCH_NAME=$(echo ${GITHUB_REF_NAME} | sed 's/\//-/g')
+        IMAGE_TAG="${BRANCH_NAME}-${SHORT_SHA}-${TAG_DATE}"
         docker build . --file Dockerfile --tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
