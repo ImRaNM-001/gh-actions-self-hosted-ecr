@@ -1,0 +1,31 @@
+# Ignore Python cache and compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore lock and dependency files (if not needed in image)
+uv.lock
+
+# Ignore test files
+*.pytest*
+test_calculator.py
+
+# Ignore local config and env files
+.env
+*.env
+
+# Ignore Docker-related files that shouldn't be in image
+.dockerignore
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore git
+.git
+.gitignore
+
+# Ignore editor configs
+.vscode/
+.idea/
