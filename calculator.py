@@ -1,14 +1,38 @@
-# Simple calculator using lambda functions
-add = lambda x, y: x + y
-subtract = lambda x, y: x - y
-multiply = lambda x, y: x * y
-divide = lambda x, y: x / y if y != 0 else 'Error: Division by zero'
+from fastapi import FastAPI
 
+app: FastAPI = FastAPI()
 
-if __name__ == "__main__":
-    print("Calculator app running!")
-    print("Addition: 2 + 3 =", add(2, 3))
-    print("Subtraction: 5 - 2 =", subtract(5, 2))
-    print("Multiplication: 3 * 4 =", multiply(3, 4))
-    print("Division: 10 / 2 =", divide(10, 2))
-    print("Division by zero: 10 / 0 =", divide(10, 0))
+#App routes
+@app.get('/')
+def home():
+    return {
+        'message': 'Calculator app running!'
+    }
+
+@app.get('/add')
+def add(x: float, y: float):
+    return {
+        'result': x + y
+    }
+
+@app.get('/subtract')
+def subtract(x: float, y: float):
+    return {
+        'result': x - y
+    }
+
+@app.get('/multiply')
+def multiply(x: float, y: float):
+    return {
+        'result': x * y
+    }
+
+@app.get('/divide')
+def divide(x: float, y: float):
+    if y == 0:
+        return {
+            'result': 'Error: Division by zero not feasible'
+        }
+    return {
+        'result': x / y
+    }

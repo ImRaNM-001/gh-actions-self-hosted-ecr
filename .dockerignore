@@ -4,9 +4,6 @@ __pycache__/
 *.pyo
 *.pyd
 
-# Ignore lock and dependency files (if not needed in image)
-uv.lock
-
 # Ignore test files
 *.pytest*
 test_calculator.py
