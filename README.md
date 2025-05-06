@@ -1,4 +1,4 @@
-# gihub-actions-self-hosted-ecr-image
+# gihub-actions-self-hosted-ecr-repo
 
 A minimal Python project demonstrating Docker best practices, GitHub Actions self hosted runner, and secure dependency management using [uv package manager](https://docs.astral.sh/uv/).
 
@@ -46,6 +46,19 @@ See [`.github/workflows/ci-self-hosted.yml`](.github/workflows/ci-self-hosted.ym
 6. **Run test cases locally:**
    ```sh
    uv run pytest -vs test_calculator.py
+   ```
+
+7. **At times the `pyproject.toml` file is updated but uv.lock file might not, to check if the uv lockfile is up-to-date, pass the `--check` flag to uv lock:**
+   ```sh
+   uv lock --check
+   ```
+
+- In case, there is an terminal "error: The lockfile at `uv.lock` needs to be updated, but `--locked` was provided"
+
+8. **To update the lockfile, run:**
+
+   ```sh
+   uv lock
    ```
 
 ## Docker Usage

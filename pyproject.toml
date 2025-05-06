@@ -1,7 +1,7 @@
 [project]
-name = "demos"
-version = "0.1.0"
-description = "Add your description here"
+name = "gh-actions-self-hosted-ecr"
+version = "0.1.1"
+description = "This project integrates GitHub Actions with self-hosted runners in any cloud to manage containerized workflows, emphasizing deployment to AWS Elastic Container Registry (ECR)"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
